@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  reporter:
+    build:
+      context: ./docker
+      args:
+        GATLING_VERSION: 3.8.4
+    env_file:
+      - mock_variables.env
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./results:/opt/gatling/results
+    command: -ro reports
+    depends_on:
+      worker:
+        condition: service_completed_successfully
+
+  worker:
+    build:
+      context: ./docker
+      args:
+        GATLING_VERSION: 3.8.4
+    env_file:
+      - mock_variables.env
+    environment:
+      - ITERATIONS=100
+    volumes:
+      - ./results/reports:/opt/gatling/results
+      - ./scenarios:/opt/gatling/scenarios
+    command: --run-mode local --simulations-folder scenarios/ --run-description "Basic Example"
