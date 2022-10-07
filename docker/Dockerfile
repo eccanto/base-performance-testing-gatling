@@ -8,9 +8,6 @@ WORKDIR /opt/gatling
 # Gating version.
 ARG GATLING_VERSION
 
-# Create directory for gatling install.
-RUN mkdir -p gatling
-
 # Install gatling.
 RUN apk add --update wget bash libc6-compat &&                                                                         \
   mkdir -p /tmp/downloads &&                                                                                           \
