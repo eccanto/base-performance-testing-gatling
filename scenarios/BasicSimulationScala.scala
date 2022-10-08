@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
 
-class BasicSimulation extends Simulation {
+class BasicSimulationScala extends Simulation {
     val SERVER_HOST = sys.env.get("SERVER_HOST").get
     val API_USERNAME = sys.env.get("API_USERNAME").get
     val API_PASSWORD = sys.env.get("API_PASSWORD").get
@@ -14,7 +14,7 @@ class BasicSimulation extends Simulation {
 
     val httpProtocol = http.baseUrl(SERVER_HOST)
 
-    val test_case = scenario("BasicSimulation")
+    val test_case = scenario("BasicSimulationScala")
         .exec(
             http("Authentication")
                 .get("/api/token")
