@@ -26,7 +26,7 @@ For performance testing Gatling presents test results in a offline report. One o
 In these examples, you will run a login and obtain users information using
 [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519) Authentication. The tested application will be a REST API
 server mock defined in this repository:
-[base-mockoon-api-rest-server-mock](https://raw.githubusercontent.com/eccanto/base-mockoon-api-rest-server-mock).
+[base-mockoon-api-rest-server-mock](https://github.com/eccanto/base-mockoon-api-rest-server-mock).
 
 ## System
 
