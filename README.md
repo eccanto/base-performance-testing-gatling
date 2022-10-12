@@ -42,10 +42,24 @@ Available examples (branches):
 - [Load testing using Gatling (Java)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/load-testing-java)
 - [Stress testing using Gatling (Scala)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/stress-testing-scala)
 - [Stress testing using Gatling (Java)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/stress-testing-java)
+- [Spike testing using Gatling (Scala)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/spike-testing-scala)
+- [Spike testing using Gatling (Java)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/spike-testing-java)
 
 # Appendix
 
-## TODO
+## Load Testing
+
+**TODO**
+
+## Stress Testing
+
+**TODO**
+
+## Spike Testing
+
+Spike testing is a type of stress testing which is performed when the application is loaded with heavy loads (within
+maximum limit allowed) repeatedly and sometimes the load on the application is increased beyond the maximum limit
+allowed for short duration.
 
 # License
 
