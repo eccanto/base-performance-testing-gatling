@@ -9,6 +9,10 @@
   * [System](#system)
 * [Examples](#examples)
 * [Appendix](#appendix)
+  * [Load Testing](#load-testing)
+  * [Stress Testing](#stress-testing)
+    * [Stress Testing vs Load Testing](#stress-testing-vs-load-testing)
+  * [Spike Testing](#spike-testing)
 * [License](#license)
 
 # Overview
@@ -49,11 +53,19 @@ Available examples (branches):
 
 ## Load Testing
 
-**TODO**
+This type of performance testing is used to confirm that your system meets your intended performance goals or
+objectives (simulates a real-world load, it is a type of `functional testing`).
 
 ## Stress Testing
 
-**TODO**
+It is a type of `non-functional testing`, this testing is done to find the numerical point when the system will break
+(in terms of a number of the users and server requests etc.) and the related error handling for the same. During Stress
+testing, the application under test is bombarded with a heavy load for a given period of time to verify the breaking
+point and to see how well error handling is done.
+
+### Stress Testing vs Load Testing
+
+![Gatling Report](documentation/images/load_testing_vs_stress_testing.png)
 
 ## Spike Testing
 
