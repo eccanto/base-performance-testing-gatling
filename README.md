@@ -1,77 +1,212 @@
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+# Performance testing using Gatling with Java and Scala
 
-# Performance testing using Gatling (Java and Scala)
+![](https://img.shields.io/badge/-Linux-grey?logo=linux)
+![](https://img.shields.io/badge/license-MIT-green)
+![](https://img.shields.io/github/stars/eccanto)
+
+This project is an example of the different types of performance tests that are described in
+[Performance testing summary](https://github.com/eccanto/base-performance-testing-documentation) using Gatling and
+Docker compose.
 
 # Table of contents
 
-* [Overview](#overview)
-  * [Scenario](#scenario)
-  * [System](#system)
-* [Examples](#examples)
-* [Appendix](#appendix)
-  * [Load Testing](#load-testing)
-  * [Stress Testing](#stress-testing)
-    * [Stress Testing vs Load Testing](#stress-testing-vs-load-testing)
-  * [Spike Testing](#spike-testing)
+* [Get started](#get-started)
+  * [Requirements](#requirements)
+  * [Configuration](#configuration)
+  * [Run performance testing](#run-performance-testing)
+    * [Implementation of "Case 1: Load testing" using Java](#implementation-of-case-1-load-testing-using-java)
+    * [Implementation of "Case 1: Load testing" using Scala](#implementation-of-case-1-load-testing-using-scala)
+    * [Implementation of "case 2: Stress testing" using Java](#implementation-of-case-2-stress-testing-using-java)
+    * [Implementation of "case 2: Stress testing" using Scala](#implementation-of-case-2-stress-testing-using-scala)
+    * [Implementation of "Case 3: Soak testing" using Java](#implementation-of-case-3-soak-testing-using-java)
+    * [Implementation of "Case 3: Soak testing" using Scala](#implementation-of-case-3-soak-testing-using-scala)
+    * [Implementation of "Case 4: Spike testing" using Java](#implementation-of-case-4-spike-testing-using-java)
+    * [Implementation of "Case 4: Spike testing" using Scala](#implementation-of-case-4-spike-testing-using-scala)
+  * [Clean environment](#crean-environment)
 * [License](#license)
 
-# Overview
+# Get Started
 
-[Gatling](https://github.com/gatling/gatling) is a performance testing tool used for load, stress testing and user
-behavior simulation. Performance testing is the general name for tests that check how the system behaves and performs.
-Software performance testing examines responsiveness, stability, scalability, reliability, speed, and resource usage
-of your software and infrastructure.
+## Requirements
 
-For performance testing Gatling presents test results in a offline report. One of the significant features of Gatling is its
-[well-documented code source](https://gatling.io/docs/gatling/).
+- [Docker +24.0.7](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker compose +2.21.0](https://docs.docker.com/compose/install/linux/)
 
-# Scenario
+## Configuration
 
-In these examples, you will run a login and obtain users information using
-[JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519) Authentication. The tested application will be a REST API
-server mock defined in this repository:
-[base-mockoon-api-rest-server-mock](https://github.com/eccanto/base-mockoon-api-rest-server-mock).
+Setup environment (start `elasticsearch`, `kibana` and `mockoon`) using docker compose:
 
-## System
+```bash
+docker compose --profile env up --detach
+```
 
-We'll begin by creating a controller container and several worker containers. There are certain prerequisites that we
-have to perform on all these workers. These include installing Gatling on all workers and setting up the scenario
-(`Java` or `Scala` file). To achieve a consistent result, we should install the same version of Gatling on all workers,
-with the same configuration on each one.
+## Run performance testing
 
-# Examples
+### Implementation of "Case 1: Load testing" using Java
 
-Available examples (branches):
-- [Load testing using Gatling (Scala)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/load-testing-scala)
-- [Load testing using Gatling (Java)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/load-testing-java)
-- [Stress testing using Gatling (Scala)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/stress-testing-scala)
-- [Stress testing using Gatling (Java)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/stress-testing-java)
-- [Spike testing using Gatling (Scala)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/spike-testing-scala)
-- [Spike testing using Gatling (Java)](https://github.com/eccanto/base-gatling-performance-testing/tree/feature/spike-testing-java)
+#### Run
 
-# Appendix
+Set `GATLING_SIMULATION=load/java` in `.env` file:
 
-## Load Testing
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1load\/java/' .env
+```
 
-This type of performance testing is used to confirm that your system meets your intended performance goals or
-objectives (simulates a real-world load, it is a type of `functional testing`).
+Run load testing with `10` runners:
 
-## Stress Testing
+```bash
+docker compose --profile test up --scale worker=10
+```
 
-It is a type of `non-functional testing`, this testing is done to find the numerical point when the system will break
-(in terms of a number of the users and server requests etc.) and the related error handling for the same. During Stress
-testing, the application under test is bombarded with a heavy load for a given period of time to verify the breaking
-point and to see how well error handling is done.
+#### Result
 
-### Stress Testing vs Load Testing
+![Load testing result](./docs/images/gatling-report-load-testing-java.png)
 
-![Gatling Report](documentation/images/load_testing_vs_stress_testing.png)
+### Implementation of "Case 1: Load testing" using Scala
 
-## Spike Testing
+#### Run
 
-Spike testing is a type of stress testing which is performed when the application is loaded with heavy loads (within
-maximum limit allowed) repeatedly and sometimes the load on the application is increased beyond the maximum limit
-allowed for short duration.
+Set `GATLING_SIMULATION=load/scala` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1load\/scala/' .env
+```
+
+Run load testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Load testing result](./docs/images/gatling-report-load-testing-scala.png)
+
+### Implementation of "Case 2: Stress testing" using Java
+
+#### Run
+
+Set `GATLING_SIMULATION=stress/java` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1stress\/java/' .env
+```
+
+Run stress testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Stress testing result](./docs/images/gatling-report-stress-testing-java.png)
+
+### Implementation of "Case 2: Stress testing" using Scala
+
+#### Run
+
+Set `GATLING_SIMULATION=stress/scala` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1stress\/scala/' .env
+```
+
+Run stress testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Stress testing result](./docs/images/gatling-report-stress-testing-scala.png)
+
+### Implementation of "Case 3: Soak testing" using Java
+
+#### Run
+
+Set `GATLING_SIMULATION=soak/java` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1soak\/java/' .env
+```
+
+Run soak testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Soak testing result](./docs/images/gatling-report-soak-testing-java.png)
+
+### Implementation of "Case 3: Soak testing" using Scala
+
+#### Run
+
+Set `GATLING_SIMULATION=soak/scala` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1soak\/scala/' .env
+```
+
+Run soak testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Soak testing result](./docs/images/gatling-report-soak-testing-scala.png)
+
+### Implementation of "Case 4: Spike testing" using Java
+
+#### Run
+
+Set `GATLING_SIMULATION=spike/java` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1spike\/java/' .env
+```
+
+Run spike testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Spike testing result](./docs/images/gatling-report-spike-testing-java.png)
+
+### Implementation of "Case 4: Spike testing" using Scala
+
+#### Run
+
+Set `GATLING_SIMULATION=spike/scala` in `.env` file:
+
+```bash
+sed -i 's/\(GATLING_SIMULATION=\).\+/\1spike\/scala/' .env
+```
+
+Run spike testing with `10` runners:
+
+```bash
+docker compose --profile test up --scale worker=10
+```
+
+#### Result
+
+![Spike testing result](./docs/images/gatling-report-spike-testing-scala.png)
+
+## Clean environment
+
+```bash
+docker compose --profile env --profile test down
+```
 
 # License
 

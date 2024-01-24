@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+    mockoon:
+        build: ./services/mockoon
+        profiles:
+            - env
+        ports:
+            - '3000:3000'
+        healthcheck:
+            test: curl -u 'test:test' localhost:3000/api/token
+            interval: 10s
+            retries: 60
+            start_period: 30s
+
+    worker:
+        image: eccanto/gatling:3.10.3-alpine
+        profiles:
+            - test
+        env_file:
+            - .env
+        volumes:
+            - ./results/reports:/app/results
+            - ./simulations/:/app/simulations/
+        command: --run-mode local --simulations-folder simulations/${GATLING_SIMULATION} --run-description "Simulation Example"
+
+    controller:
+        image: eccanto/gatling:3.10.3-alpine
+        profiles:
+            - test
+        env_file:
+            - .env
+        ports:
+            - "8089:8089"
+        volumes:
+            - ./results:/app/results
+        command: -ro reports
+        depends_on:
+            worker:
+                condition: service_completed_successfully
