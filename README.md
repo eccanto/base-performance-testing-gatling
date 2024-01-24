@@ -34,7 +34,7 @@ Docker compose.
 
 ## Configuration
 
-Setup environment (start `elasticsearch`, `kibana` and `mockoon`) using docker compose:
+Setup environment (start `mockoon` server) using docker compose:
 
 ```bash
 docker compose --profile env up --detach
